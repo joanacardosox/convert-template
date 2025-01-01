@@ -9,6 +9,7 @@ const form = document.querySelector("form");
 const amount = document.getElementById("amount");
 const currency = document.getElementById("currency");
 const footer = document.querySelector("main footer");
+const description = document.getElementById("description");
 
 // Manipulando o input amount para receber somente números
 amount.addEventListener("input", () => {
@@ -30,14 +31,15 @@ form.onsubmit = (event) => {
     case "GBP":
       convertCurrency(amount.value, GBP, "£");
       break;
-    default:
-      console.log("Selecione uma moeda válida.");
   }
 };
 
 // Função para converter a moeda
 function convertCurrency(amount, price, symbol) {
   try {
+    //Exibindo de forma dinamica
+    description.textContent = `${symbol} 1 = ${formatCurrencyBRL(price)}`;
+
     //Aplica a classe que exibe o footer para mostrar o resultado
     footer.classList.add("show-result");
   } catch (error) {
@@ -46,4 +48,13 @@ function convertCurrency(amount, price, symbol) {
     footer.classList.remove("show-result");
     alert("Não foi possivel!");
   }
+}
+
+// Formata a moeda em Real Brasileiro
+function formatCurrencyBRL(value) {
+  // Converte para número para utilizar o toLocaleString para formatar no padrão BRL (R$ 00,00)
+  return Number(value).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
 }
